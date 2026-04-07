@@ -3,18 +3,11 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 import os
 
-def split_and_scale_data(df, feature_cols, target_col, train_frac=0.70, val_frac=0.15, scaler_save_path=None):
+def fit_and_scale_splits(df_train, df_val, df_test, feature_cols, scaler_save_path=None):
     """
-    Chronologically splits data into train/val/test and scales features based on train set to prevent data leakage.
+    Fits a StandardScaler on the training set and scales the train, val, and test data.
+    Saves the scaler to disk to prevent data leakage and for later inference.
     """
-    n = len(df)
-    train_end = int(n * train_frac)
-    val_end   = int(n * (train_frac + val_frac))
-
-    df_train = df.iloc[:train_end]
-    df_val   = df.iloc[train_end:val_end]
-    df_test  = df.iloc[val_end:]
-
     scaler = StandardScaler()
     scaler.fit(df_train[feature_cols])
 

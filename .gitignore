@@ -1,1 +1,7 @@
 context_files/
+data_set/
+data/
+outputs/
+models/
+__pycache__/
+.ipynb_checkpoints/
