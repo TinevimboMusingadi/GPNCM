@@ -1,0 +1,38 @@
+data:
+  feature_cols: [rain, temp, vappr, rhum, msl, clamt, wdsp, wddir, dewpt]
+  target_col: rain
+  n_past: 24
+  n_future: 1
+  train_frac: 0.70
+  val_frac: 0.15
+
+lstm:
+  units: [64, 128]
+  dropout: 0.2
+  l2: 1.0e-4
+  epochs: 200
+  batch_size: 64
+  patience: 15
+
+transformer:
+  d_model: 64
+  num_heads: 4
+  ff_dim: 128
+  num_blocks: 2
+  dropout: 0.1
+  epochs: 200
+  batch_size: 64
+  patience: 20
+
+paths:
+  # To run on Colab with Drive, comment the local paths and uncomment the Colab paths below.
+  # project_dir: /content/drive/MyDrive/GPNCM
+  # data_dir: /content/drive/MyDrive/GPNCM/data
+  # model_dir: /content/drive/MyDrive/GPNCM/models
+  # output_dir: /content/drive/MyDrive/GPNCM/outputs
+
+  # Local paths for testing on Windows desktop
+  project_dir: ..
+  data_dir: ../data
+  model_dir: ../models
+  output_dir: ../outputs
