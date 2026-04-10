@@ -26,3 +26,29 @@ def build_lstm(n_past, n_features, units=(64, 128), dropout_rate=0.2, l2_lambda=
     model.compile(optimizer='adam', loss='mse', metrics=[masked_mape])
     
     return model
+
+def grow_lstm_model(old_model, additional_units, dropout_rate=0.2, l2_lambda=1e-4):
+    """
+    Expands an existing LSTM model by adding a new Dense layer before the output.
+    This allows the model to increase capacity as it sees more diverse station data.
+    """
+    # Get current architecture
+    old_layers = old_model.layers
+    
+    # We reconstruct the model to add a layer before the final Dense(1)
+    # The output of the second to last layer (before final Dense)
+    x = old_layers[-2].output 
+    
+    # Add new capacity
+    x = Dense(additional_units, activation='relu', kernel_regularizer=l2(l2_lambda))(x)
+    x = Dropout(dropout_rate)(x)
+    
+    # New output layer
+    new_output = Dense(1, name=f'output_{len(old_layers)}')(x)
+    
+    new_model = Model(inputs=old_model.input, outputs=new_output)
+    
+    # Compile with default settings
+    new_model.compile(optimizer='adam', loss='mse', metrics=[masked_mape])
+    
+    return new_model
