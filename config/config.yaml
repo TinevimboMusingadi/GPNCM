@@ -13,6 +13,16 @@ lstm:
   epochs: 200
   batch_size: 64
   patience: 15
+  incremental_layers: [32, 64] # Units for additional LSTM/Dense layers
+  learning_rate_finetune: 0.0001
+
+rl:
+  enabled: true
+  reward_type: "utility" # utility or mse
+  storm_penalty_multiplier: 5.0
+  accuracy_bonus: 10.0
+  experience_replay_size: 1000
+  simulation_episodes: 5
 
 transformer:
   d_model: 64

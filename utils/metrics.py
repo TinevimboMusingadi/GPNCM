@@ -1,6 +1,7 @@
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
+@tf.keras.saving.register_keras_serializable(package="CustomMetrics")
 def masked_mape(y_true, y_pred, epsilon=0.1):
     """
     MAPE ignoring near-zero rainfall values to avoid division by zero.
