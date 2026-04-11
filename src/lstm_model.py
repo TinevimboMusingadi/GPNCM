@@ -52,3 +52,16 @@ def grow_lstm_model(old_model, additional_units, dropout_rate=0.2, l2_lambda=1e-
     new_model.compile(optimizer='adam', loss='mse', metrics=[masked_mape])
     
     return new_model
+
+def load_evolved_model(model_path):
+    """
+    Robustly loads an evolved model, bypassing Keras 3 deserialization issues.
+    """
+    try:
+        # We use compile=False to avoid the common 'mse' deserialization bug in Keras 3
+        model = tf.keras.models.load_model(model_path, compile=False)
+        model.compile(optimizer='adam', loss='mse', metrics=[masked_mape])
+        return model
+    except Exception as e:
+        print(f"Warning: Could not load model from {model_path} due to: {e}")
+        return None
